@@ -28,7 +28,7 @@ namespace App.Application.Common.Behaviors
             });
 
             // FluentValidation
-            services.AddValidatorsFromAssembly(assembly);
+            services.AddValidatorsFromAssembly(assembly);           
 
             // AutoMapper
             services.AddAutoMapper(assembly);

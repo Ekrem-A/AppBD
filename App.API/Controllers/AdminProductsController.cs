@@ -1,32 +1,47 @@
 ﻿using App.Application.DTOs;
+using App.Application.Features.Admin.Queries.GetDashboardStats;
 using App.Application.Features.Products.Commands.CreateProduct;
 using App.Application.Features.Products.Commands.DeleteProduct;
 using App.Application.Features.Products.Commands.UpdateProduct;
-using App.Application.Features.Products.Queries.GetAllProducts;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-
 namespace App.API.Controllers
 {
-    [ApiController]
     [Route("api/[controller]")]
-    public class ProductsController : ControllerBase
+    [ApiController]
+    [Authorize(Roles = "Admin,SuperAdmin")]
+
+    public class AdminProductsController : ControllerBase
     {
+
         private readonly IMediator _mediator;
 
-        public ProductsController(IMediator mediator)
+        public AdminProductsController(IMediator mediator)
         {
             _mediator = mediator;
         }
 
         [HttpGet]
-        [AllowAnonymous]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll(
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 20,
+            [FromQuery] string? searchTerm = null,
+            [FromQuery] int? categoryId = null,
+            [FromQuery] bool? isActive = null,
+            [FromQuery] bool? lowStock = null)
         {
-            var query = new GetAllProductsQuery();
+            var query = new GetAllProductsForAdminQuery(
+                pageNumber,
+                pageSize,
+                searchTerm,
+                categoryId,
+                isActive,
+                lowStock
+            );
+
             var result = await _mediator.Send(query);
 
             if (!result.IsSuccess)
@@ -36,7 +51,6 @@ namespace App.API.Controllers
         }
 
         [HttpGet("{id}")]
-        [AllowAnonymous]
         public async Task<IActionResult> GetById(int id)
         {
             var query = new GetProductByIdQuery(id);
@@ -49,7 +63,6 @@ namespace App.API.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([FromBody] CreateProductDto dto)
         {
             var command = new CreateProductCommand(
@@ -71,7 +84,6 @@ namespace App.API.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateProductDto dto)
         {
             if (id != dto.Id)
@@ -98,7 +110,6 @@ namespace App.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             var command = new DeleteProductCommand(id);
@@ -110,12 +121,13 @@ namespace App.API.Controllers
             return NoContent();
         }
 
-        [HttpGet("category/{categoryId}")]
-        [AllowAnonymous]
-        public async Task<IActionResult> GetByCategory(int categoryId)
+        [HttpPatch("{id}/stock")]
+        public async Task<IActionResult> UpdateStock(
+            int id,
+            [FromBody] UpdateStockDto dto)
         {
-            var query = new GetProductsByCategoryQuery(categoryId);
-            var result = await _mediator.Send(query);
+            var command = new UpdateProductStockCommand(id, dto.StockQuantity);
+            var result = await _mediator.Send(command);
 
             if (!result.IsSuccess)
                 return BadRequest(result.Error);
@@ -123,12 +135,12 @@ namespace App.API.Controllers
             return Ok(result.Data);
         }
 
-        [HttpGet("search")]
-        [AllowAnonymous]
-        public async Task<IActionResult> Search([FromQuery] string searchTerm)
+        [HttpPost("bulk-update-status")]
+        public async Task<IActionResult> BulkUpdateStatus(
+            [FromBody] BulkUpdateStatusDto dto)
         {
-            var query = new SearchProductsQuery(searchTerm);
-            var result = await _mediator.Send(query);
+            var command = new BulkUpdateProductStatusCommand(dto.ProductIds, dto.IsActive);
+            var result = await _mediator.Send(command);
 
             if (!result.IsSuccess)
                 return BadRequest(result.Error);

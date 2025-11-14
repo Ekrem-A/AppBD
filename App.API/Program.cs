@@ -1,4 +1,4 @@
-using App.Application;
+using App.Application.Common;
 using App.Domain.Interfaces;
 using App.Infrastructure;
 using App.Infrastructure.Persistence;
@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
-using Microsoft.OpenApi.Models;
 using Serilog;
 using System.Text;
 using FluentValidation;
@@ -104,18 +103,19 @@ builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 
 // MediatR
 builder.Services.AddMediatR(cfg =>
-    cfg.RegisterServicesFromAssembly(typeof(ECommerce.Application.AssemblyReference).Assembly));
+    cfg.RegisterServicesFromAssembly(typeof(App.Application.AssemblyReference).Assembly));
 
 // AutoMapper
-builder.Services.AddAutoMapper(typeof(ECommerce.Application.AssemblyReference).Assembly);
+builder.Services.AddAutoMapper(typeof(App.Application.AssemblyReference).Assembly);
 
 // FluentValidation
-builder.Services.AddValidatorsFromAssembly(typeof(ECommerce.Application.AssemblyReference).Assembly);
+builder.Services.AddValidatorsFromAssembly(typeof(App.Application.AssemblyReference).Assembly);
 
 // Logging with Serilog
 builder.Host.UseSerilog((context, configuration) =>
     configuration.ReadFrom.Configuration(context.Configuration));
 
+builder.Services.AddControllers();
 
 var app = builder.Build();
 

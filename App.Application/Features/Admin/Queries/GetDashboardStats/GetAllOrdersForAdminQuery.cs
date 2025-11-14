@@ -4,11 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace App.Domain.Enums
+namespace App.Application.Features.Admin.Queries.GetDashboardStats
 {
-    public enum UserRole
+    internal class GetAllOrdersForAdminQuery
     {
-        Customer = 1,
-        Admin = 2,        
     }
 }
