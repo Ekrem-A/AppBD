@@ -1,14 +1,11 @@
 using App.Application.Common.Interfaces;
 using App.Application.Common;
 using App.Domain.Interfaces;
-using App.Infrastructure;
 using App.Infrastructure.Persistence;
 using App.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi;
 using Serilog;
 using System.Text;
 using FluentValidation;
@@ -22,7 +19,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddEndpointsApiExplorer();
 
 // Swagger Configuration with JWT
 builder.Services.AddSwaggerGen(c =>
@@ -67,7 +63,7 @@ builder.Services.AddSwaggerGen(c =>
 
 // Database Configuration
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
        
 
 // CORS Configuration
@@ -114,6 +110,7 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("SuperAdminOnly", policy =>
         policy.RequireRole("SuperAdmin"));
 });
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowNextJS", policy =>
@@ -160,7 +157,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "ECommerce API V1");
-        c.RoutePrefix = string.Empty; // Swagger'ý root'ta aç
+        //c.RoutePrefix = string.Empty; // Swagger'ý root'ta aç
     });
 }
 
@@ -172,6 +169,7 @@ app.UseCors("AllowNextJS");
 
 app.UseAuthentication();
 app.UseAuthorization();
+
 
 // Database Migration (Production'da yapýlmamalý)
 if (app.Environment.IsDevelopment())

@@ -73,7 +73,7 @@ namespace App.Infrastructure.Persistence
                     Id = 1,
                     Email = "admin@ecommerce.com",
                     // BCrypt hash - gerçek uygulamada PasswordHasher kullanın
-                    PasswordHash = "$2a$11$7qKx9qKZ9qKZ9qKZ9qKZ9uxvUxvUxvUxvUxvUxvUxvUxvUxvUxvU",
+                    PasswordHash = "12345",
                     FirstName = "Admin",
                     LastName = "User",
                     Role = Domain.Enums.UserRole.Admin,
@@ -128,7 +128,6 @@ namespace App.Infrastructure.Persistence
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            // Otomatik UpdatedAt güncelleme
             foreach (var entry in ChangeTracker.Entries<BaseEntity>())
             {
                 if (entry.State == EntityState.Modified)
