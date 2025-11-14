@@ -15,9 +15,9 @@ namespace App.Infrastructure.Persistence
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
-
         }
 
+        // DbSets
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Order> Orders { get; set; }
@@ -32,149 +32,8 @@ namespace App.Infrastructure.Persistence
         {
             base.OnModelCreating(modelBuilder);
 
-            // Product Configuration
-            modelBuilder.Entity<Product>(entity =>
-            {
-                entity.HasKey(e => e.Id);
-                entity.Property(e => e.Name).IsRequired().HasMaxLength(200);
-                entity.Property(e => e.Description).HasMaxLength(2000);
-                entity.Property(e => e.Price).HasPrecision(18, 2);
-                entity.Property(e => e.SKU).IsRequired().HasMaxLength(50);
-                entity.HasIndex(e => e.SKU).IsUnique();
-
-                entity.HasOne(e => e.Category)
-                    .WithMany(c => c.Products)
-                    .HasForeignKey(e => e.CategoryId)
-                    .OnDelete(DeleteBehavior.Restrict);
-
-                entity.HasQueryFilter(e => !e.IsDeleted);
-            });
-
-            // Category Configuration
-            modelBuilder.Entity<Category>(entity =>
-            {
-                entity.HasKey(e => e.Id);
-                entity.Property(e => e.Name).IsRequired().HasMaxLength(100);
-
-                entity.HasOne(e => e.ParentCategory)
-                    .WithMany(c => c.SubCategories)
-                    .HasForeignKey(e => e.ParentCategoryId)
-                    .OnDelete(DeleteBehavior.Restrict);
-
-                entity.HasQueryFilter(e => !e.IsDeleted);
-            });
-
-            // Order Configuration
-            modelBuilder.Entity<Order>(entity =>
-            {
-                entity.HasKey(e => e.Id);
-                entity.Property(e => e.OrderNumber).IsRequired().HasMaxLength(50);
-                entity.HasIndex(e => e.OrderNumber).IsUnique();
-                entity.Property(e => e.TotalAmount).HasPrecision(18, 2);
-
-                entity.HasOne(e => e.User)
-                    .WithMany(u => u.Orders)
-                    .HasForeignKey(e => e.UserId)
-                    .OnDelete(DeleteBehavior.Restrict);
-
-                entity.HasQueryFilter(e => !e.IsDeleted);
-            });
-
-            // OrderItem Configuration
-            modelBuilder.Entity<OrderItem>(entity =>
-            {
-                entity.HasKey(e => e.Id);
-                entity.Property(e => e.UnitPrice).HasPrecision(18, 2);
-                entity.Property(e => e.TotalPrice).HasPrecision(18, 2);
-
-                entity.HasOne(e => e.Order)
-                    .WithMany(o => o.OrderItems)
-                    .HasForeignKey(e => e.OrderId)
-                    .OnDelete(DeleteBehavior.Cascade);
-
-                entity.HasOne(e => e.Product)
-                    .WithMany(p => p.OrderItems)
-                    .HasForeignKey(e => e.ProductId)
-                    .OnDelete(DeleteBehavior.Restrict);
-
-                entity.HasQueryFilter(e => !e.IsDeleted);
-            });
-
-            // User Configuration
-            modelBuilder.Entity<User>(entity =>
-            {
-                entity.HasKey(e => e.Id);
-                entity.Property(e => e.Email).IsRequired().HasMaxLength(256);
-                entity.HasIndex(e => e.Email).IsUnique();
-                entity.Property(e => e.FirstName).IsRequired().HasMaxLength(100);
-                entity.Property(e => e.LastName).IsRequired().HasMaxLength(100);
-
-                entity.HasQueryFilter(e => !e.IsDeleted);
-            });
-
-            // Cart Configuration
-            modelBuilder.Entity<Cart>(entity =>
-            {
-                entity.HasKey(e => e.Id);
-
-                entity.HasOne(e => e.User)
-                    .WithOne(u => u.Cart)
-                    .HasForeignKey<Cart>(e => e.UserId)
-                    .OnDelete(DeleteBehavior.Cascade);
-
-                entity.HasQueryFilter(e => !e.IsDeleted);
-            });
-
-            // CartItem Configuration
-            modelBuilder.Entity<CartItem>(entity =>
-            {
-                entity.HasKey(e => e.Id);
-
-                entity.HasOne(e => e.Cart)
-                    .WithMany(c => c.CartItems)
-                    .HasForeignKey(e => e.CartId)
-                    .OnDelete(DeleteBehavior.Cascade);
-
-                entity.HasOne(e => e.Product)
-                    .WithMany(p => p.CartItems)
-                    .HasForeignKey(e => e.ProductId)
-                    .OnDelete(DeleteBehavior.Restrict);
-
-                entity.HasQueryFilter(e => !e.IsDeleted);
-            });
-
-            // Payment Configuration
-            modelBuilder.Entity<Payment>(entity =>
-            {
-                entity.HasKey(e => e.Id);
-                entity.Property(e => e.Amount).HasPrecision(18, 2);
-                entity.Property(e => e.TransactionId).IsRequired().HasMaxLength(100);
-
-                entity.HasOne(e => e.Order)
-                    .WithOne(o => o.Payment)
-                    .HasForeignKey<Payment>(e => e.OrderId)
-                    .OnDelete(DeleteBehavior.Cascade);
-
-                entity.HasQueryFilter(e => !e.IsDeleted);
-            });
-
-            // Address Configuration
-            modelBuilder.Entity<Address>(entity =>
-            {
-                entity.HasKey(e => e.Id);
-                entity.Property(e => e.Title).IsRequired().HasMaxLength(50);
-                entity.Property(e => e.FullName).IsRequired().HasMaxLength(200);
-                entity.Property(e => e.PhoneNumber).IsRequired().HasMaxLength(20);
-                entity.Property(e => e.City).IsRequired().HasMaxLength(100);
-                entity.Property(e => e.District).IsRequired().HasMaxLength(100);
-
-                entity.HasOne(e => e.User)
-                    .WithMany(u => u.Addresses)
-                    .HasForeignKey(e => e.UserId)
-                    .OnDelete(DeleteBehavior.Cascade);
-
-                entity.HasQueryFilter(e => !e.IsDeleted);
-            });
+            // Configurations uygula
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
 
             // Seed Data
             SeedData(modelBuilder);
@@ -184,9 +43,27 @@ namespace App.Infrastructure.Persistence
         {
             // Kategoriler
             modelBuilder.Entity<Category>().HasData(
-                new Category { Id = 1, Name = "Elektronik", CreatedAt = DateTime.UtcNow },
-                new Category { Id = 2, Name = "Giyim", CreatedAt = DateTime.UtcNow },
-                new Category { Id = 3, Name = "Ev & Yaşam", CreatedAt = DateTime.UtcNow }
+                new Category
+                {
+                    Id = 1,
+                    Name = "Elektronik",
+                    Description = "Elektronik ürünler ve aksesuarlar",
+                    CreatedAt = DateTime.UtcNow
+                },
+                new Category
+                {
+                    Id = 2,
+                    Name = "Giyim",
+                    Description = "Giyim ve moda ürünleri",
+                    CreatedAt = DateTime.UtcNow
+                },
+                new Category
+                {
+                    Id = 3,
+                    Name = "Ev & Yaşam",
+                    Description = "Ev dekorasyonu ve yaşam ürünleri",
+                    CreatedAt = DateTime.UtcNow
+                }
             );
 
             // Admin kullanıcı (şifre: Admin123!)
@@ -195,11 +72,55 @@ namespace App.Infrastructure.Persistence
                 {
                     Id = 1,
                     Email = "admin@ecommerce.com",
-                    PasswordHash = "$2a$11$7qKx9qKZ9qKZ9qKZ9qKZ9uxvUxvUxvUxvUxvUxvUxvUxvUxvUxvU", // Hashed password
+                    // BCrypt hash - gerçek uygulamada PasswordHasher kullanın
+                    PasswordHash = "$2a$11$7qKx9qKZ9qKZ9qKZ9qKZ9uxvUxvUxvUxvUxvUxvUxvUxvUxvUxvU",
                     FirstName = "Admin",
                     LastName = "User",
-                    Role = UserRole.Admin,
+                    Role = Domain.Enums.UserRole.Admin,
                     IsEmailConfirmed = true,
+                    CreatedAt = DateTime.UtcNow
+                }
+            );
+
+            // Örnek ürünler
+            modelBuilder.Entity<Product>().HasData(
+                new Product
+                {
+                    Id = 1,
+                    Name = "iPhone 15 Pro",
+                    Description = "Apple iPhone 15 Pro 256GB Titanyum",
+                    Price = 45999.99m,
+                    StockQuantity = 50,
+                    SKU = "APPL-IPH15P-256-TIT",
+                    CategoryId = 1,
+                    IsActive = true,
+                    ImageUrl = "https://via.placeholder.com/400x400?text=iPhone+15+Pro",
+                    CreatedAt = DateTime.UtcNow
+                },
+                new Product
+                {
+                    Id = 2,
+                    Name = "Samsung Galaxy S24",
+                    Description = "Samsung Galaxy S24 Ultra 512GB",
+                    Price = 38999.99m,
+                    StockQuantity = 35,
+                    SKU = "SAMS-S24U-512-BLK",
+                    CategoryId = 1,
+                    IsActive = true,
+                    ImageUrl = "https://via.placeholder.com/400x400?text=Galaxy+S24",
+                    CreatedAt = DateTime.UtcNow
+                },
+                new Product
+                {
+                    Id = 3,
+                    Name = "Nike Air Max",
+                    Description = "Nike Air Max 270 Erkek Spor Ayakkabı",
+                    Price = 3299.99m,
+                    StockQuantity = 100,
+                    SKU = "NIKE-AM270-WHT-42",
+                    CategoryId = 2,
+                    IsActive = true,
+                    ImageUrl = "https://via.placeholder.com/400x400?text=Nike+Air+Max",
                     CreatedAt = DateTime.UtcNow
                 }
             );

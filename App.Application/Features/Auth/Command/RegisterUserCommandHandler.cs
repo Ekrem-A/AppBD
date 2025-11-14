@@ -1,4 +1,5 @@
 ﻿using App.Application.Common;
+using App.Application.Common.Interfaces;
 using App.Application.DTOs;
 using App.Domain.Entities;
 using App.Domain.Enums;

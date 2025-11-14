@@ -1,4 +1,5 @@
-﻿using App.Application.Features.Admin.Commands;
+﻿using App.Application.DTOs;
+using App.Application.Features.Admin.Commands;
 using App.Application.Features.Admin.Queries.GetDashboardStats;
 using App.Domain.Enums;
 using MediatR;
@@ -6,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace App.API.Controllers
+namespace App.API.Controllers.Admin
 {
     [ApiController]
     [Route("api/admin/[controller]")]

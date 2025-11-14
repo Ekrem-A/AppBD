@@ -11,6 +11,11 @@ using Microsoft.OpenApi;
 using Serilog;
 using System.Text;
 using FluentValidation;
+using App.API.Middleware;
+using App.Application;
+using App.Infrastructure.Services;
+using App.Application.Common.Interfaces;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -25,9 +30,15 @@ builder.Services.AddSwaggerGen(c =>
     {
         Title = "ECommerce API",
         Version = "v1",
-        Description = "E-Ticaret API Dokümantasyonu"
+        Description = "E-Ticaret API Dokümantasyonu",
+        Contact = new OpenApiContact
+        {
+            Name = "Destek Ekibi",
+            Email = "destek@ecommerce.com"
+        }
     });
 
+    // JWT Authentication için Swagger yapýlandýrmasý
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
@@ -94,7 +105,24 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", policy =>
+        policy.RequireRole("Admin", "SuperAdmin"));
+
+    options.AddPolicy("SuperAdminOnly", policy =>
+        policy.RequireRole("SuperAdmin"));
+});
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowNextJS", policy =>
+    {
+        policy.WithOrigins("http://localhost:3000", "http://localhost:3001")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
+});
 
 // Dependency Injection
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -115,6 +143,11 @@ builder.Services.AddValidatorsFromAssembly(typeof(App.Application.AssemblyRefere
 builder.Host.UseSerilog((context, configuration) =>
     configuration.ReadFrom.Configuration(context.Configuration));
 
+// Ensure the following line is correct and matches the actual method in your App.Application namespace
+builder.Services.AddApplication();
+builder.Services.AddInfrastructure(builder.Configuration);
+
+
 builder.Services.AddControllers();
 
 var app = builder.Build();
@@ -129,6 +162,8 @@ if (app.Environment.IsDevelopment())
         c.RoutePrefix = string.Empty; // Swagger'ý root'ta aç
     });
 }
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseHttpsRedirection();
 

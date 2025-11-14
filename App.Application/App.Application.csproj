@@ -1,6 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <Compile Remove="Features\Carts\**" />
+    <EmbeddedResource Remove="Features\Carts\**" />
+    <None Remove="Features\Carts\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\App.Domain\App.Domain.csproj" />
   </ItemGroup>
 
@@ -10,10 +16,7 @@
     <PackageReference Include="FluentValidation" Version="12.1.0" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.0" />
     <PackageReference Include="MediatR" Version="13.1.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Features\Carts\Command\" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
   </ItemGroup>
 
   <PropertyGroup>

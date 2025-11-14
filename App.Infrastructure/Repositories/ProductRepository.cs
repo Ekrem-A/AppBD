@@ -9,45 +9,68 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace App.Infrastructure.Repositories
-{
-    public class ProductRepository : Repository<Product>, IProductRepository
-    {
-        public ProductRepository(ApplicationDbContext context) : base(context)
+{ 
+        public class ProductRepository : Repository<Product>, IProductRepository
         {
-        }
+            public ProductRepository(ApplicationDbContext context) : base(context)
+            {
+            }
 
-        public async Task<IEnumerable<Product>> GetByCategoryIdAsync(int categoryId, CancellationToken cancellationToken = default)
-        {
-            return await _dbSet
-                .Include(p => p.Category)
-                .Where(p => p.CategoryId == categoryId && p.IsActive)
-                .ToListAsync(cancellationToken);
-        }
+            public async Task<IEnumerable<Product>> GetByCategoryIdAsync(
+                int categoryId,
+                CancellationToken cancellationToken = default)
+            {
+                return await _dbSet
+                    .Include(p => p.Category)
+                    .Where(p => p.CategoryId == categoryId && p.IsActive)
+                    .OrderBy(p => p.Name)
+                    .ToListAsync(cancellationToken);
+            }
 
-        public async Task<IEnumerable<Product>> SearchAsync(string searchTerm, CancellationToken cancellationToken = default)
-        {
-            return await _dbSet
-                .Include(p => p.Category)
-                .Where(p => p.IsActive &&
-                       (p.Name.Contains(searchTerm) ||
-                        p.Description.Contains(searchTerm) ||
-                        p.SKU.Contains(searchTerm)))
-                .ToListAsync(cancellationToken);
-        }
+            public async Task<IEnumerable<Product>> SearchAsync(
+                string searchTerm,
+                CancellationToken cancellationToken = default)
+            {
+                var lowerSearchTerm = searchTerm.ToLower();
 
-        public async Task<IEnumerable<Product>> GetActiveProductsAsync(CancellationToken cancellationToken = default)
-        {
-            return await _dbSet
-                .Include(p => p.Category)
-                .Where(p => p.IsActive)
-                .ToListAsync(cancellationToken);
-        }
+                return await _dbSet
+                    .Include(p => p.Category)
+                    .Where(p => p.IsActive &&
+                           (p.Name.ToLower().Contains(lowerSearchTerm) ||
+                            p.Description.ToLower().Contains(lowerSearchTerm) ||
+                            p.SKU.ToLower().Contains(lowerSearchTerm)))
+                    .OrderBy(p => p.Name)
+                    .ToListAsync(cancellationToken);
+            }
 
-        public override async Task<Product?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
-        {
-            return await _dbSet
-                .Include(p => p.Category)
-                .FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
-        }
+            public async Task<IEnumerable<Product>> GetActiveProductsAsync(
+                CancellationToken cancellationToken = default)
+            {
+                return await _dbSet
+                    .Include(p => p.Category)
+                    .Where(p => p.IsActive)
+                    .OrderBy(p => p.Name)
+                    .ToListAsync(cancellationToken);
+            }
+
+            public async Task<IEnumerable<Product>> GetLowStockProductsAsync(
+                int threshold,
+                CancellationToken cancellationToken = default)
+            {
+                return await _dbSet
+                    .Include(p => p.Category)
+                    .Where(p => p.IsActive && p.StockQuantity <= threshold)
+                    .OrderBy(p => p.StockQuantity)
+                    .ToListAsync(cancellationToken);
+            }
+
+            public override async Task<Product?> GetByIdAsync(
+                int id,
+                CancellationToken cancellationToken = default)
+            {
+                return await _dbSet
+                    .Include(p => p.Category)
+                    .FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
+            }
     }
 }

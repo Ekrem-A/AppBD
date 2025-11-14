@@ -40,6 +40,7 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
 
     public virtual Task DeleteAsync(T entity, CancellationToken cancellationToken = default)
     {
+        // Soft delete
         entity.IsDeleted = true;
         entity.UpdatedAt = DateTime.UtcNow;
         return Task.CompletedTask;
@@ -49,4 +50,8 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
     {
         return await _dbSet.AnyAsync(e => e.Id == id, cancellationToken);
     }
-}
+
+    public virtual IQueryable<T> Query()
+    {
+        return _dbSet.AsQueryable();
+    }

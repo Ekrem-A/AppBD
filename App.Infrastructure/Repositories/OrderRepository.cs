@@ -17,7 +17,9 @@ namespace App.Infrastructure.Repositories
         {
         }
 
-        public async Task<IEnumerable<Order>> GetByUserIdAsync(int userId, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<Order>> GetByUserIdAsync(
+            int userId,
+            CancellationToken cancellationToken = default)
         {
             return await _dbSet
                 .Include(o => o.OrderItems)
@@ -28,7 +30,9 @@ namespace App.Infrastructure.Repositories
                 .ToListAsync(cancellationToken);
         }
 
-        public async Task<Order?> GetByOrderNumberAsync(string orderNumber, CancellationToken cancellationToken = default)
+        public async Task<Order?> GetByOrderNumberAsync(
+            string orderNumber,
+            CancellationToken cancellationToken = default)
         {
             return await _dbSet
                 .Include(o => o.OrderItems)
@@ -38,7 +42,9 @@ namespace App.Infrastructure.Repositories
                 .FirstOrDefaultAsync(o => o.OrderNumber == orderNumber, cancellationToken);
         }
 
-        public async Task<IEnumerable<Order>> GetByStatusAsync(OrderStatus status, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<Order>> GetByStatusAsync(
+            OrderStatus status,
+            CancellationToken cancellationToken = default)
         {
             return await _dbSet
                 .Include(o => o.OrderItems)
@@ -49,7 +55,9 @@ namespace App.Infrastructure.Repositories
                 .ToListAsync(cancellationToken);
         }
 
-        public override async Task<Order?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
+        public override async Task<Order?> GetByIdAsync(
+            int id,
+            CancellationToken cancellationToken = default)
         {
             return await _dbSet
                 .Include(o => o.OrderItems)
@@ -57,6 +65,18 @@ namespace App.Infrastructure.Repositories
                 .Include(o => o.Payment)
                 .Include(o => o.User)
                 .FirstOrDefaultAsync(o => o.Id == id, cancellationToken);
+        }
+
+        public async Task<IEnumerable<Order>> GetOrdersWithDetailsAsync(
+            CancellationToken cancellationToken = default)
+        {
+            return await _dbSet
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.Product)
+                .Include(o => o.Payment)
+                .Include(o => o.User)
+                .OrderByDescending(o => o.OrderDate)
+                .ToListAsync(cancellationToken);
         }
     }
 }
