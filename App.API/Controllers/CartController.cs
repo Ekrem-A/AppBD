@@ -3,7 +3,12 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using App.Application.Features.Products.Commands.CreateProduct.
+using App.Application.Features.Products.Commands.CreateProduct;
+using App.Application.Features.Cart.Queries;
+using App.Application.Features.Cart.Commands.AddToCart;
+using App.Application.Features.Cart.Commands.Update;
+using App.Application.Features.Cart.Commands.Remove;
+using App.Application.Features.Cart.Commands.Clear;
 
 namespace App.API.Controllers
 {

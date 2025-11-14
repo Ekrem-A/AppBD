@@ -2,6 +2,7 @@
 using App.Application.Features.Products.Commands.CreateProduct;
 using App.Application.Features.Products.Commands.DeleteProduct;
 using App.Application.Features.Products.Commands.UpdateProduct;
+using App.Application.Features.Products.Queries;
 using App.Application.Features.Products.Queries.GetAllProducts;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

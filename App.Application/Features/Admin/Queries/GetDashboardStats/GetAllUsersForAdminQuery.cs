@@ -1,4 +1,5 @@
 ﻿using App.Application.Common;
+using App.Application.Features.Products.Queries;
 using App.Domain.Enums;
 using MediatR;
 using System;

@@ -1,5 +1,7 @@
 ﻿using App.Application.DTOs;
-using App.Application.Queries; // veya GetOrdersByUserIdQuery'nin tanımlı olduğu doğru namespace
+using App.Application.Features.Order.Commands.Create;
+using App.Application.Features.Order.Commands.Update;
+using App.Application.Features.Order.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -63,17 +65,17 @@ namespace App.API.Controllers
             return CreatedAtAction(nameof(GetById), new { id = result.Data!.Id }, result.Data);
         }
 
-        [HttpPut("{id}/status")]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> UpdateStatus(int id, [FromBody] UpdateOrderStatusDto dto)
-        {
-            var command = new UpdateOrderStatusCommand(id, dto.Status);
-            var result = await _mediator.Send(command);
+        //[HttpPut("{id}/status")]
+        //[Authorize(Roles = "Admin")]
+        //public async Task<IActionResult> UpdateStatus(int id, [FromBody] UpdateOrderStatusDto dto)
+        //{
+        //    var command = new UpdateOrderStatusCommand(id, dto.Status);
+        //    var result = await _mediator.Send(command);
 
-            if (!result.IsSuccess)
-                return BadRequest(result.Error);
+        //    if (!result.IsSuccess)
+        //        return BadRequest(result.Error);
 
-            return Ok(result.Data);
-        }
+        //    return Ok(result.Data);
+        //}
     }
 }

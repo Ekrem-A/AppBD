@@ -1,5 +1,7 @@
 ﻿using App.Application.Common;
 using App.Application.DTOs;
+using App.Application.Features.Order.Commands;
+using App.Application.Features.Order.Commands.Create;
 using App.Domain.Entities;
 using App.Domain.Enums;
 using App.Domain.Interfaces;
@@ -12,7 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace App.Application.Features.Order.Commands.Create
+namespace App.Application.Features.Order
 {
     public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Result<OrderDto>>
     {
@@ -50,7 +52,7 @@ namespace App.Application.Features.Order.Commands.Create
                 var orderNumber = GenerateOrderNumber();
 
                 // Sipariş oluştur
-                var order = new Order
+                var order = new App.Domain.Entities.Order
                 {
                     OrderNumber = orderNumber,
                     UserId = request.UserId,
@@ -95,8 +97,7 @@ namespace App.Application.Features.Order.Commands.Create
                         TotalPrice = product.Price * item.Quantity
                     };
 
-                    await _unitOfWork.Orders.AddAsync(orderItem, cancellationToken);
-                    totalAmount += orderItem.TotalPrice;
+                    order.OrderItems.Add(orderItem);
 
                     // Stok güncelle
                     product.StockQuantity -= item.Quantity;
@@ -106,18 +107,6 @@ namespace App.Application.Features.Order.Commands.Create
                 // Toplam tutarı güncelle
                 order.TotalAmount = totalAmount;
                 await _unitOfWork.Orders.UpdateAsync(order, cancellationToken);
-
-                // Kullanıcının sepetini temizle (opsiyonel)
-                var cart = await _unitOfWork.Carts
-                    .GetCartWithItemsAsync(request.UserId, cancellationToken);
-
-                if (cart != null && cart.CartItems.Any())
-                {
-                    foreach (var cartItem in cart.CartItems.ToList())
-                    {
-                        await _unitOfWork.DeleteAsync(cartItem, cancellationToken);
-                    }
-                }
 
                 await _unitOfWork.SaveChangesAsync(cancellationToken);
                 await _unitOfWork.CommitTransactionAsync(cancellationToken);

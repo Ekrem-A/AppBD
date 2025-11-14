@@ -61,7 +61,7 @@ namespace App.Application.Features.Cart.Commands.AddToCart
 
                 if (cart == null)
                 {
-                    cart = new Cart { UserId = request.UserId };
+                    cart = new App.Domain.Entities.Cart { UserId = request.UserId };
                     await _unitOfWork.Carts.AddAsync(cart, cancellationToken);
                     await _unitOfWork.SaveChangesAsync(cancellationToken);
                 }

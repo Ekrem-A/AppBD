@@ -1,6 +1,7 @@
 ﻿using App.Application.Common;
 using App.Application.DTOs;
 using App.Application.Features.Admin.Queries.GetDashboardStats;
+using App.Application.Features.Products.Queries;
 using App.Domain.Interfaces;
 using AutoMapper;
 using MediatR;

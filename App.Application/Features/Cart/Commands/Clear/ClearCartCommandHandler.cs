@@ -38,10 +38,15 @@ namespace App.Application.Features.Cart.Commands.Clear
                     return Result<bool>.Success(true);
                 }
 
+                var cartItemRepository = _unitOfWork.GetRepository<CartItem>() as IRepository<CartItem>;
+                if (cartItemRepository == null)
+                {
+                    throw new InvalidOperationException("CartItem repository could not be resolved.");
+                }
+
                 foreach (var item in cart.CartItems.ToList())
                 {
-                    await _unitOfWork.GetRepository<CartItem>()
-                        .DeleteAsync(item, cancellationToken);
+                    await cartItemRepository.DeleteAsync(item, cancellationToken);
                 }
 
                 await _unitOfWork.SaveChangesAsync(cancellationToken);

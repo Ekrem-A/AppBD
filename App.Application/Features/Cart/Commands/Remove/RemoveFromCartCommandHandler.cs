@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace App.Application.Features.Cart.Commands.Remove
 {
     public class RemoveFromCartCommandHandler
-    : IRequestHandler<RemoveFromCartCommand, Result<bool>>
+        : IRequestHandler<RemoveFromCartCommand, Result<bool>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<RemoveFromCartCommandHandler> _logger;
@@ -31,16 +31,20 @@ namespace App.Application.Features.Cart.Commands.Remove
         {
             try
             {
-                var cartItem = await _unitOfWork.GetRepository<CartItem>()
-                    .GetByIdAsync(request.CartItemId, cancellationToken);
+                var repository = _unitOfWork.GetRepository<CartItem>() as IRepository<CartItem>;
+                if (repository == null)
+                {
+                    return Result<bool>.Failure("CartItem repository could not be resolved.");
+                }
+
+                var cartItem = await repository.GetByIdAsync(request.CartItemId, cancellationToken);
 
                 if (cartItem == null)
                 {
                     return Result<bool>.Failure("Sepet öğesi bulunamadı.");
                 }
 
-                await _unitOfWork.GetRepository<CartItem>()
-                    .DeleteAsync(cartItem, cancellationToken);
+                await repository.DeleteAsync(cartItem, cancellationToken);
                 await _unitOfWork.SaveChangesAsync(cancellationToken);
 
                 _logger.LogInformation(

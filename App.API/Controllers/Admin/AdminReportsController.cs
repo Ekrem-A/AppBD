@@ -17,44 +17,44 @@ namespace App.API.Controllers.Admin
             _mediator = mediator;
         }
 
-        [HttpGet("sales")]
-        public async Task<IActionResult> GetSalesReport(
-            [FromQuery] DateTime fromDate,
-            [FromQuery] DateTime toDate,
-            [FromQuery] string groupBy = "day") // day, week, month
-        {
-            var query = new GetSalesReportQuery(fromDate, toDate, groupBy);
-            var result = await _mediator.Send(query);
+        //[HttpGet("sales")]
+        //public async Task<IActionResult> GetSalesReport(
+        //    [FromQuery] DateTime fromDate,
+        //    [FromQuery] DateTime toDate,
+        //    [FromQuery] string groupBy = "day") // day, week, month
+        //{
+        //    var query = new GetSalesReportQuery(fromDate, toDate, groupBy);
+        //    var result = await _mediator.Send(query);
 
-            if (!result.IsSuccess)
-                return BadRequest(result.Error);
+        //    if (!result.IsSuccess)
+        //        return BadRequest(result.Error);
 
-            return Ok(result.Data);
-        }
+        //    return Ok(result.Data);
+        //}
 
-        [HttpGet("inventory")]
-        public async Task<IActionResult> GetInventoryReport()
-        {
-            var query = new GetInventoryReportQuery();
-            var result = await _mediator.Send(query);
+        //[HttpGet("inventory")]
+        //public async Task<IActionResult> GetInventoryReport()
+        //{
+        //    var query = new GetInventoryReportQuery();
+        //    var result = await _mediator.Send(query);
 
-            if (!result.IsSuccess)
-                return BadRequest(result.Error);
+        //    if (!result.IsSuccess)
+        //        return BadRequest(result.Error);
 
-            return Ok(result.Data);
-        }
+        //    return Ok(result.Data);
+        //}
 
-        [HttpGet("customers")]
-        public async Task<IActionResult> GetCustomerReport(
-            [FromQuery] int topN = 10)
-        {
-            var query = new GetTopCustomersQuery(topN);
-            var result = await _mediator.Send(query);
+        //[HttpGet("customers")]
+        //public async Task<IActionResult> GetCustomerReport(
+        //    [FromQuery] int topN = 10)
+        //{
+        //    var query = new GetTopCustomersQuery(topN);
+        //    var result = await _mediator.Send(query);
 
-            if (!result.IsSuccess)
-                return BadRequest(result.Error);
+        //    if (!result.IsSuccess)
+        //        return BadRequest(result.Error);
 
-            return Ok(result.Data);
-        }
+        //    return Ok(result.Data);
+        //}
     }
 }

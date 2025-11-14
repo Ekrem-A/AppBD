@@ -3,6 +3,7 @@ using App.Application.Features.Admin.Queries.GetDashboardStats;
 using App.Application.Features.Products.Commands.CreateProduct;
 using App.Application.Features.Products.Commands.DeleteProduct;
 using App.Application.Features.Products.Commands.UpdateProduct;
+using App.Application.Features.Products.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -121,31 +122,31 @@ namespace App.API.Controllers.Admin
             return NoContent();
         }
 
-        [HttpPatch("{id}/stock")]
-        public async Task<IActionResult> UpdateStock(
-            int id,
-            [FromBody] UpdateStockDto dto)
-        {
-            var command = new UpdateProductStockCommand(id, dto.StockQuantity);
-            var result = await _mediator.Send(command);
+        //[HttpPatch("{id}/stock")]
+        //public async Task<IActionResult> UpdateStock(
+        //    int id,
+        //    [FromBody] UpdateStockDto dto)
+        //{
+        //    var command = new UpdateProductStockCommand(id, dto.StockQuantity);
+        //    var result = await _mediator.Send(command);
 
-            if (!result.IsSuccess)
-                return BadRequest(result.Error);
+        //    if (!result.IsSuccess)
+        //        return BadRequest(result.Error);
 
-            return Ok(result.Data);
-        }
+        //    return Ok(result.Data);
+        //}
 
-        [HttpPost("bulk-update-status")]
-        public async Task<IActionResult> BulkUpdateStatus(
-            [FromBody] BulkUpdateStatusDto dto)
-        {
-            var command = new BulkUpdateProductStatusCommand(dto.ProductIds, dto.IsActive);
-            var result = await _mediator.Send(command);
+        //[HttpPost("bulk-update-status")]
+        //public async Task<IActionResult> BulkUpdateStatus(
+        //    [FromBody] BulkUpdateStatusDto dto)
+        //{
+        //    var command = new BulkUpdateProductStatusCommand(dto.ProductIds, dto.IsActive);
+        //    var result = await _mediator.Send(command);
 
-            if (!result.IsSuccess)
-                return BadRequest(result.Error);
+        //    if (!result.IsSuccess)
+        //        return BadRequest(result.Error);
 
-            return Ok(result.Data);
-        }
+        //    return Ok(result.Data);
+        //}
     }
 }

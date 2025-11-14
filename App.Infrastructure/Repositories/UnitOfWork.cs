@@ -14,6 +14,8 @@ namespace App.Infrastructure.Repositories
     {
         private readonly ApplicationDbContext _context;
         private IDbContextTransaction? _transaction;
+        private readonly Dictionary<Type, object> _repositories = new();
+
 
         public IProductRepository Products { get; }
         public IOrderRepository Orders { get; }
@@ -33,6 +35,21 @@ namespace App.Infrastructure.Repositories
             Categories = new Repository<Category>(_context);
             Payments = new Repository<Payment>(_context);
             Addresses = new Repository<Address>(_context);
+        }
+
+        public IRepository<T> GetRepository<T>() where T : BaseEntity
+        {
+            var type = typeof(T);
+
+            if (_repositories.TryGetValue(type, out var repo))
+            {
+                return (IRepository<T>)repo;
+            }
+
+            var newRepo = new Repository<T>(_context);
+            _repositories[type] = newRepo;
+
+            return newRepo;
         }
 
         public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

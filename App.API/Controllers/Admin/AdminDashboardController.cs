@@ -8,7 +8,7 @@ namespace App.API.Controllers.Admin
 {
     [Route("api/[controller]")]
     [ApiController]
-    [[Authorize(Roles = "Admin,SuperAdmin")]
+    [Authorize(Roles = "Admin,SuperAdmin")]
     public class AdminDashboardController : ControllerBase
     {
         private readonly IMediator _mediator;

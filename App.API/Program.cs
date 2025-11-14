@@ -1,3 +1,4 @@
+using App.Application.Common.Interfaces;
 using App.Application.Common;
 using App.Domain.Interfaces;
 using App.Infrastructure;
@@ -14,7 +15,6 @@ using FluentValidation;
 using App.API.Middleware;
 using App.Application;
 using App.Infrastructure.Services;
-using App.Application.Common.Interfaces;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +22,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddEndpointsApiExplorer();
 
 // Swagger Configuration with JWT
 builder.Services.AddSwaggerGen(c =>
@@ -66,7 +67,7 @@ builder.Services.AddSwaggerGen(c =>
 
 // Database Configuration
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection");
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
        
 
 // CORS Configuration

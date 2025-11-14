@@ -7,7 +7,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
+
 namespace App.API.Controllers.Admin
+
 {
     [ApiController]
     [Route("api/admin/[controller]")]
@@ -43,44 +45,44 @@ namespace App.API.Controllers.Admin
             return Ok(result.Data);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
-        {
-            var query = new GetUserByIdQuery(id);
-            var result = await _mediator.Send(query);
+        //[HttpGet("{id}")]
+        //public async Task<IActionResult> GetById(int id)
+        //{
+        //    var query = new GetUserByIdQuery(id);
+        //    var result = await _mediator.Send(query);
 
-            if (!result.IsSuccess)
-                return NotFound(result.Error);
+        //    if (!result.IsSuccess)
+        //        return NotFound(result.Error);
 
-            return Ok(result.Data);
-        }
+        //    return Ok(result.Data);
+        //}
 
-        [HttpPut("{id}/role")]
-        [Authorize(Roles = "SuperAdmin")] // Sadece SuperAdmin rol değiştirebilir
-        public async Task<IActionResult> UpdateRole(
-            int id,
-            [FromBody] UpdateUserRoleDto dto)
-        {
-            var command = new UpdateUserRoleCommand(id, dto.Role);
-            var result = await _mediator.Send(command);
+        //[HttpPut("{id}/role")]
+        //[Authorize(Roles = "SuperAdmin")] // Sadece SuperAdmin rol değiştirebilir
+        //public async Task<IActionResult> UpdateRole(
+        //    int id,
+        //    [FromBody] UpdateUserRoleDto dto)
+        //{
+        //    var command = new UpdateUserRoleCommand(id, dto.Role);
+        //    var result = await _mediator.Send(command);
 
-            if (!result.IsSuccess)
-                return BadRequest(result.Error);
+        //    if (!result.IsSuccess)
+        //        return BadRequest(result.Error);
 
-            return Ok(new { message = "Kullanıcı rolü güncellendi" });
-        }
+        //    return Ok(new { message = "Kullanıcı rolü güncellendi" });
+        //}
 
-        [HttpDelete("{id}")]
-        [Authorize(Roles = "SuperAdmin")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var command = new DeleteUserCommand(id);
-            var result = await _mediator.Send(command);
+        //[HttpDelete("{id}")]
+        //[Authorize(Roles = "SuperAdmin")]
+        //public async Task<IActionResult> Delete(int id)
+        //{
+        //    var command = new DeleteUserCommand(id);
+        //    var result = await _mediator.Send(command);
 
-            if (!result.IsSuccess)
-                return BadRequest(result.Error);
+        //    if (!result.IsSuccess)
+        //        return BadRequest(result.Error);
 
-            return NoContent();
-        }
+        //    return NoContent();
+        //}
     }
 }

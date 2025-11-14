@@ -1,4 +1,5 @@
 ﻿using App.Application.DTOs;
+using App.Application.Features.Auth.Command;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -48,33 +49,7 @@ namespace App.API.Controllers
                 return Unauthorized(result.Error);
 
             return Ok(result.Data);
-        }
-
-        [HttpPost("refresh-token")]
-        [AllowAnonymous]
-        public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenDto dto)
-        {
-            var command = new RefreshTokenCommand(dto.RefreshToken);
-            var result = await _mediator.Send(command);
-
-            if (!result.IsSuccess)
-                return Unauthorized(result.Error);
-
-            return Ok(result.Data);
-        }
-
-        [HttpGet("me")]
-        [Authorize]
-        public async Task<IActionResult> GetCurrentUser()
-        {
-            var userId = int.Parse(User.FindFirst("userId")?.Value ?? "0");
-            var query = new GetUserByIdQuery(userId);
-            var result = await _mediator.Send(query);
-
-            if (!result.IsSuccess)
-                return NotFound(result.Error);
-
-            return Ok(result.Data);
-        }
+        }      
+      
     }
 }

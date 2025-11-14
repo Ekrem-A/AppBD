@@ -55,3 +55,4 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
     {
         return _dbSet.AsQueryable();
     }
+}

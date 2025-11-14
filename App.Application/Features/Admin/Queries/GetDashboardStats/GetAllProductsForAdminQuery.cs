@@ -1,4 +1,5 @@
 ﻿using App.Application.Common;
+using App.Application.Features.Products.Queries;
 using MediatR;
 using System;
 using System.Collections.Generic;

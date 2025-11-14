@@ -27,4 +27,12 @@ namespace App.Application.DTOs
         int ProductId,
         int Quantity
     );
+
+    public record UpdateCartItemDto(
+    int Quantity
+    );
+
+    public record RemoveFromCartDto(
+        int CartItemId
+    );
 }

@@ -1,4 +1,8 @@
-﻿using App.Domain.Enums;
+﻿using App.Application.Features.Admin.Queries.GetDashboardStats;
+using App.Application.Features.Order.Commands.Cancel;
+using App.Application.Features.Order.Commands.Update;
+using App.Application.Features.Order.Queries;
+using App.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -56,47 +60,32 @@ namespace App.API.Controllers.Admin
             return Ok(result.Data);
         }
 
-        [HttpPut("{id}/status")]
-        public async Task<IActionResult> UpdateStatus(
-            int id,
-            [FromBody] UpdateOrderStatusDto dto)
-        {
-            var command = new UpdateOrderStatusCommand(id, dto.Status, dto.TrackingNumber);
-            var result = await _mediator.Send(command);
+        //[HttpPut("{id}/status")]
+        //public async Task<IActionResult> UpdateStatus(
+        //    int id,
+        //    [FromBody] UpdateOrderStatusDto dto)
+        //{
+        //    var command = new UpdateOrderStatusCommand(id, dto.Status, dto.TrackingNumber);
+        //    var result = await _mediator.Send(command);
 
-            if (!result.IsSuccess)
-                return BadRequest(result.Error);
+        //    if (!result.IsSuccess)
+        //        return BadRequest(result.Error);
 
-            return Ok(result.Data);
-        }
+        //    return Ok(result.Data);
+        //}
 
-        [HttpPost("{id}/cancel")]
-        public async Task<IActionResult> Cancel(
-            int id,
-            [FromBody] CancelOrderDto dto)
-        {
-            var command = new CancelOrderCommand(id, dto.Reason);
-            var result = await _mediator.Send(command);
+        //[HttpPost("{id}/cancel")]
+        //public async Task<IActionResult> Cancel(
+        //    int id,
+        //    [FromBody] CancelOrderDto dto)
+        //{
+        //    var command = new CancelOrderCommand(id, dto.Reason);
+        //    var result = await _mediator.Send(command);
 
-            if (!result.IsSuccess)
-                return BadRequest(result.Error);
+        //    if (!result.IsSuccess)
+        //        return BadRequest(result.Error);
 
-            return Ok(new { message = "Sipariş iptal edildi" });
-        }
-
-        [HttpGet("export")]
-        public async Task<IActionResult> ExportOrders(
-            [FromQuery] DateTime? fromDate = null,
-            [FromQuery] DateTime? toDate = null,
-            [FromQuery] OrderStatus? status = null)
-        {
-            var query = new ExportOrdersQuery(fromDate, toDate, status);
-            var result = await _mediator.Send(query);
-
-            if (!result.IsSuccess)
-                return BadRequest(result.Error);
-
-            return File(result.Data!, "text/csv", $"orders_{DateTime.UtcNow:yyyyMMdd}.csv");
-        }
+        //    return Ok(new { message = "Sipariş iptal edildi" });
+        //}
     }
 }

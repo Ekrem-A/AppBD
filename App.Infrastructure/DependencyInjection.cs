@@ -14,14 +14,8 @@ using App.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Configuration;
-using Microsoft.EntityFrameworkCore;
-using ECommerce.Domain.Interfaces;
-using ECommerce.Infrastructure.Persistence;
-using ECommerce.Infrastructure.Repositories;
-using ECommerce.Infrastructure.Services;
+using App.Application.Common.Interfaces;
+using App.Infrastructure.Services;
 
 namespace App.Application.Common
 {
