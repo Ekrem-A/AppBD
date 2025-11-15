@@ -169,6 +169,7 @@ app.UseCors("AllowNextJS");
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.MapControllers();   
 
 
 // Database Migration (Production'da yapýlmamalý)

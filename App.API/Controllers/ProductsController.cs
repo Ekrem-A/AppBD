@@ -12,8 +12,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace App.API.Controllers
 {
-    [ApiController]
+   
     [Route("api/[controller]")]
+    [ApiController]
     public class ProductsController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -25,15 +26,42 @@ namespace App.API.Controllers
 
         [HttpGet]
         [AllowAnonymous]
+        //public async Task<IActionResult> GetAll()
+        //{
+        //    var query = new GetAllProductsQuery();
+        //    var result = await _mediator.Send(query);
+
+        //    if (!result.IsSuccess)
+        //        return BadRequest(result.Error);
+
+        //    return Ok(result.Data);
+        //}
+
         public async Task<IActionResult> GetAll()
         {
-            var query = new GetAllProductsQuery();
-            var result = await _mediator.Send(query);
+            try
+            {
+                var query = new GetAllProductsQuery();
+                var result = await _mediator.Send(query);
 
-            if (!result.IsSuccess)
-                return BadRequest(result.Error);
+                if (result == null)
+                    return StatusCode(500, new { message = "Handler null result döndürdü." });
 
-            return Ok(result.Data);
+                if (!result.IsSuccess)
+                    return BadRequest(result.Error);
+
+                return Ok(result.Data);
+            }
+            catch (Exception ex)
+            {
+                // Geçici olarak gerçek hatayı gör:
+                return StatusCode(500, new
+                {
+                    statusCode = 500,
+                    message = ex.Message,
+                    stackTrace = ex.StackTrace
+                });
+            }
         }
 
         [HttpGet("{id}")]

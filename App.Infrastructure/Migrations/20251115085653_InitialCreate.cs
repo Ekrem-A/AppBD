@@ -261,24 +261,24 @@ namespace App.Infrastructure.Migrations
                 columns: new[] { "Id", "CreatedAt", "Description", "IsDeleted", "Name", "ParentCategoryId", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2025, 11, 14, 22, 17, 33, 327, DateTimeKind.Utc).AddTicks(3523), "Elektronik ürünler ve aksesuarlar", false, "Elektronik", null, null },
-                    { 2, new DateTime(2025, 11, 14, 22, 17, 33, 327, DateTimeKind.Utc).AddTicks(3526), "Giyim ve moda ürünleri", false, "Giyim", null, null },
-                    { 3, new DateTime(2025, 11, 14, 22, 17, 33, 327, DateTimeKind.Utc).AddTicks(3529), "Ev dekorasyonu ve yaşam ürünleri", false, "Ev & Yaşam", null, null }
+                    { 1, new DateTime(2025, 11, 15, 8, 56, 53, 246, DateTimeKind.Utc).AddTicks(2016), "Elektronik ürünler ve aksesuarlar", false, "Elektronik", null, null },
+                    { 2, new DateTime(2025, 11, 15, 8, 56, 53, 246, DateTimeKind.Utc).AddTicks(2018), "Giyim ve moda ürünleri", false, "Giyim", null, null },
+                    { 3, new DateTime(2025, 11, 15, 8, 56, 53, 246, DateTimeKind.Utc).AddTicks(2019), "Ev dekorasyonu ve yaşam ürünleri", false, "Ev & Yaşam", null, null }
                 });
 
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "CreatedAt", "Email", "FirstName", "IsDeleted", "IsEmailConfirmed", "LastName", "PasswordHash", "PhoneNumber", "Role", "UpdatedAt" },
-                values: new object[] { 1, new DateTime(2025, 11, 14, 22, 17, 33, 327, DateTimeKind.Utc).AddTicks(3700), "admin@ecommerce.com", "Admin", false, true, "User", "12345", null, "Admin", null });
+                values: new object[] { 1, new DateTime(2025, 11, 15, 8, 56, 53, 246, DateTimeKind.Utc).AddTicks(2097), "admin@ecommerce.com", "Admin", false, true, "User", "12345", null, "Admin", null });
 
             migrationBuilder.InsertData(
                 table: "Products",
                 columns: new[] { "Id", "CategoryId", "CreatedAt", "Description", "ImageUrl", "IsActive", "Name", "Price", "SKU", "StockQuantity", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1, 1, new DateTime(2025, 11, 14, 22, 17, 33, 327, DateTimeKind.Utc).AddTicks(3728), "Apple iPhone 15 Pro 256GB Titanyum", "https://via.placeholder.com/400x400?text=iPhone+15+Pro", true, "iPhone 15 Pro", 45999.99m, "APPL-IPH15P-256-TIT", 50, null },
-                    { 2, 1, new DateTime(2025, 11, 14, 22, 17, 33, 327, DateTimeKind.Utc).AddTicks(3732), "Samsung Galaxy S24 Ultra 512GB", "https://via.placeholder.com/400x400?text=Galaxy+S24", true, "Samsung Galaxy S24", 38999.99m, "SAMS-S24U-512-BLK", 35, null },
-                    { 3, 2, new DateTime(2025, 11, 14, 22, 17, 33, 327, DateTimeKind.Utc).AddTicks(3865), "Nike Air Max 270 Erkek Spor Ayakkabı", "https://via.placeholder.com/400x400?text=Nike+Air+Max", true, "Nike Air Max", 3299.99m, "NIKE-AM270-WHT-42", 100, null }
+                    { 1, 1, new DateTime(2025, 11, 15, 8, 56, 53, 246, DateTimeKind.Utc).AddTicks(2116), "Apple iPhone 15 Pro 256GB Titanyum", "https://via.placeholder.com/400x400?text=iPhone+15+Pro", true, "iPhone 15 Pro", 45999.99m, "APPL-IPH15P-256-TIT", 50, null },
+                    { 2, 1, new DateTime(2025, 11, 15, 8, 56, 53, 246, DateTimeKind.Utc).AddTicks(2118), "Samsung Galaxy S24 Ultra 512GB", "https://via.placeholder.com/400x400?text=Galaxy+S24", true, "Samsung Galaxy S24", 38999.99m, "SAMS-S24U-512-BLK", 35, null },
+                    { 3, 2, new DateTime(2025, 11, 15, 8, 56, 53, 246, DateTimeKind.Utc).AddTicks(2120), "Nike Air Max 270 Erkek Spor Ayakkabı", "https://via.placeholder.com/400x400?text=Nike+Air+Max", true, "Nike Air Max", 3299.99m, "NIKE-AM270-WHT-42", 100, null }
                 });
 
             migrationBuilder.CreateIndex(

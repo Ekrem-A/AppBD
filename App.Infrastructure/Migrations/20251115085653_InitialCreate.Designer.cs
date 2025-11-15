@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace App.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251114221734_InitialCreate")]
+    [Migration("20251115085653_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -183,7 +183,7 @@ namespace App.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2025, 11, 14, 22, 17, 33, 327, DateTimeKind.Utc).AddTicks(3523),
+                            CreatedAt = new DateTime(2025, 11, 15, 8, 56, 53, 246, DateTimeKind.Utc).AddTicks(2016),
                             Description = "Elektronik ürünler ve aksesuarlar",
                             IsDeleted = false,
                             Name = "Elektronik"
@@ -191,7 +191,7 @@ namespace App.Infrastructure.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2025, 11, 14, 22, 17, 33, 327, DateTimeKind.Utc).AddTicks(3526),
+                            CreatedAt = new DateTime(2025, 11, 15, 8, 56, 53, 246, DateTimeKind.Utc).AddTicks(2018),
                             Description = "Giyim ve moda ürünleri",
                             IsDeleted = false,
                             Name = "Giyim"
@@ -199,7 +199,7 @@ namespace App.Infrastructure.Migrations
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2025, 11, 14, 22, 17, 33, 327, DateTimeKind.Utc).AddTicks(3529),
+                            CreatedAt = new DateTime(2025, 11, 15, 8, 56, 53, 246, DateTimeKind.Utc).AddTicks(2019),
                             Description = "Ev dekorasyonu ve yaşam ürünleri",
                             IsDeleted = false,
                             Name = "Ev & Yaşam"
@@ -421,7 +421,7 @@ namespace App.Infrastructure.Migrations
                         {
                             Id = 1,
                             CategoryId = 1,
-                            CreatedAt = new DateTime(2025, 11, 14, 22, 17, 33, 327, DateTimeKind.Utc).AddTicks(3728),
+                            CreatedAt = new DateTime(2025, 11, 15, 8, 56, 53, 246, DateTimeKind.Utc).AddTicks(2116),
                             Description = "Apple iPhone 15 Pro 256GB Titanyum",
                             ImageUrl = "https://via.placeholder.com/400x400?text=iPhone+15+Pro",
                             IsActive = true,
@@ -435,7 +435,7 @@ namespace App.Infrastructure.Migrations
                         {
                             Id = 2,
                             CategoryId = 1,
-                            CreatedAt = new DateTime(2025, 11, 14, 22, 17, 33, 327, DateTimeKind.Utc).AddTicks(3732),
+                            CreatedAt = new DateTime(2025, 11, 15, 8, 56, 53, 246, DateTimeKind.Utc).AddTicks(2118),
                             Description = "Samsung Galaxy S24 Ultra 512GB",
                             ImageUrl = "https://via.placeholder.com/400x400?text=Galaxy+S24",
                             IsActive = true,
@@ -449,7 +449,7 @@ namespace App.Infrastructure.Migrations
                         {
                             Id = 3,
                             CategoryId = 2,
-                            CreatedAt = new DateTime(2025, 11, 14, 22, 17, 33, 327, DateTimeKind.Utc).AddTicks(3865),
+                            CreatedAt = new DateTime(2025, 11, 15, 8, 56, 53, 246, DateTimeKind.Utc).AddTicks(2120),
                             Description = "Nike Air Max 270 Erkek Spor Ayakkabı",
                             ImageUrl = "https://via.placeholder.com/400x400?text=Nike+Air+Max",
                             IsActive = true,
@@ -524,7 +524,7 @@ namespace App.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2025, 11, 14, 22, 17, 33, 327, DateTimeKind.Utc).AddTicks(3700),
+                            CreatedAt = new DateTime(2025, 11, 15, 8, 56, 53, 246, DateTimeKind.Utc).AddTicks(2097),
                             Email = "admin@ecommerce.com",
                             FirstName = "Admin",
                             IsDeleted = false,

@@ -32,7 +32,8 @@ namespace App.Application
             services.AddValidatorsFromAssembly(assembly);
 
             // AutoMapper - Tüm Profile'ları otomatik kaydet
-            services.AddAutoMapper(assembly);
+            services.AddAutoMapper(typeof(DependencyInjection).Assembly);
+
 
             return services;
         }
