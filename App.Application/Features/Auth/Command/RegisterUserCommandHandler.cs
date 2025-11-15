@@ -67,13 +67,17 @@ namespace App.Application.Features.Auth.Command
 
                 await _unitOfWork.Users.AddAsync(user, cancellationToken);
 
-                //// Kullanıcı için boş sepet oluştur
-                //var cart = new Cart { UserId = user.Id };
-                //await _unitOfWork.Carts.AddAsync(cart, cancellationToken);
+                // Kullanıcı için boş sepet oluştur
+                var cart = new App.Domain.Entities.Cart
+                {
+                    User = user,
+                    CreatedAt = DateTime.UtcNow
+                };
+                await _unitOfWork.Carts.AddAsync(cart, cancellationToken);
 
-                //await _unitOfWork.SaveChangesAsync(cancellationToken);
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-                //_logger.LogInformation("Yeni kullanıcı kaydedildi: {Email}", request.Email);
+                _logger.LogInformation("Yeni kullanıcı kaydedildi: {Email}", request.Email);
 
                 // Token oluştur
                 var token = _jwtService.GenerateToken(user);

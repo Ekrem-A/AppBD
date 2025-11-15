@@ -73,7 +73,7 @@ namespace App.Infrastructure.Persistence
                     Id = 1,
                     Email = "admin@ecommerce.com",
                     // BCrypt hash - gerçek uygulamada PasswordHasher kullanın
-                    PasswordHash = "12345",
+                    PasswordHash = BCrypt.Net.BCrypt.HashPassword("Admin123!"),
                     FirstName = "Admin",
                     LastName = "User",
                     Role = Domain.Enums.UserRole.Admin,

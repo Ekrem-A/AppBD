@@ -61,9 +61,16 @@ namespace App.Application.Features.Cart.Commands.AddToCart
 
                 if (cart == null)
                 {
-                    cart = new App.Domain.Entities.Cart { UserId = request.UserId };
-                    await _unitOfWork.Carts.AddAsync(cart, cancellationToken);
-                    await _unitOfWork.SaveChangesAsync(cancellationToken);
+                    _logger.LogInformation("Kullanıcının sepeti yok, boş sepet dönüldü. UserId: {UserId}", request.UserId);
+
+                    var emptyCart = new CartDto(
+                        Id: 0,
+                        UserId: request.UserId,
+                        Items: new List<CartItemDto>(),
+                        TotalAmount: 0m
+                    );
+
+                    return Result<CartDto>.Success(emptyCart);
                 }
 
                 // Aynı ürün sepette var mı kontrol et

@@ -20,10 +20,6 @@ namespace App.Infrastructure.Persistence
             optionsBuilder.UseSqlServer(
                 "Server=(localdb)\\MSSQLLocalDB;Database=AppDb;Trusted_Connection=True;TrustServerCertificate=True");
 
-            // Eğer PostgreSQL kullanıyorsan bunun yerine:
-            // optionsBuilder.UseNpgsql(
-            //     "Host=localhost;Port=5432;Database=ECommerceDb;Username=postgres;Password=123456");
-
             return new ApplicationDbContext(optionsBuilder.Options);
         }
     }

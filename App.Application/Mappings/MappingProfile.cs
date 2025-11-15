@@ -24,7 +24,7 @@ namespace App.API.Mappings
             CreateMap<Cart, CartDto>()
                 .ForMember(d => d.Items, opt => opt.MapFrom(s => s.CartItems))
                 .ForMember(d => d.TotalAmount, opt => opt.MapFrom(s =>
-                    s.CartItems.Sum(ci => ci.Product.Price * ci.Quantity)));
+                    s.CartItems.Sum(ci => ci.Product.Price * ci.Quantity)));            
 
             CreateMap<CartItem, CartItemDto>()
                 .ForMember(d => d.ProductName, opt => opt.MapFrom(s => s.Product.Name))

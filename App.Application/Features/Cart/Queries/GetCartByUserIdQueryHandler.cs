@@ -3,6 +3,7 @@ using App.Application.DTOs;
 using App.Domain.Interfaces;
 using AutoMapper;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,12 +33,15 @@ namespace App.Application.Features.Cart.Queries
 
             if (cart == null)
             {
-                // Boş sepet döndür
-                return Result<CartDto>.Success(new CartDto(
-                    0,
-                    request.UserId,
-                    new List<CartItemDto>(),
-                    0));
+               
+                var emptyCart = new CartDto(
+                    Id: 0,
+                    UserId: request.UserId,
+                    Items: new List<CartItemDto>(),
+                    TotalAmount: 0m
+                );
+
+                return Result<CartDto>.Success(emptyCart);
             }
 
             var cartDto = _mapper.Map<CartDto>(cart);
