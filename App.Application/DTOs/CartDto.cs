@@ -6,21 +6,23 @@ using System.Threading.Tasks;
 
 namespace App.Application.DTOs
 {
-    public record CartDto(
-        int Id,
-        int UserId,
-        List<CartItemDto> Items,
-        decimal TotalAmount
-    );
+    public record CartDto
+    {
+        public int Id { get; init; }
+        public int UserId { get; init; }
+        public List<CartItemDto> Items { get; init; } = new();
+        public decimal TotalAmount { get; init; }
+    }
 
-    public record CartItemDto(
-        int Id,
-        int ProductId,
-        string ProductName,
-        decimal Price,
-        int Quantity,
-        decimal SubTotal
-    );
+    public record CartItemDto
+    {
+        public int Id { get; init; }
+        public int ProductId { get; init; }
+        public string ProductName { get; init; } = string.Empty;
+        public decimal Price { get; init; }
+        public int Quantity { get; init; }
+        public decimal SubTotal { get; init; }
+    }
 
     public record AddToCartDto(
         int UserId,

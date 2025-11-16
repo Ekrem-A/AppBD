@@ -38,20 +38,26 @@ namespace App.Application.Features.Order
         {
             try
             {
-                // Transaction başlat
-                await _unitOfWork.BeginTransactionAsync(cancellationToken);
+                
 
                 // Kullanıcı kontrolü
-                var userExists = await _unitOfWork.Users.ExistsAsync(request.UserId, cancellationToken);
-                if (!userExists)
-                {
-                    return Result<OrderDto>.Failure("Kullanıcı bulunamadı.");
-                }
+                var userExists = await _unitOfWork.Users
+                    .ExistsAsync(request.UserId, cancellationToken);
 
-                // Sipariş numarası oluştur
+                if (!userExists)
+                    return Result<OrderDto>.Failure("Kullanıcı bulunamadı.");
+
+                // Sepeti getir
+                var cart = await _unitOfWork.Carts
+                    .GetCartWithItemsAsync(request.UserId, cancellationToken);
+
+                if (cart == null || cart.CartItems == null || !cart.CartItems.Any())
+                    return Result<OrderDto>.Failure("Sepette ürün bulunmuyor.");
+
+                // Sipariş numarası
                 var orderNumber = GenerateOrderNumber();
 
-                // Sipariş oluştur
+                // Sipariş entity
                 var order = new App.Domain.Entities.Order
                 {
                     OrderNumber = orderNumber,
@@ -59,76 +65,95 @@ namespace App.Application.Features.Order
                     OrderDate = DateTime.UtcNow,
                     Status = OrderStatus.Pending,
                     ShippingAddress = request.ShippingAddress,
-                    TotalAmount = 0
+                    TotalAmount = 0m,
+                    OrderItems = new List<OrderItem>()
                 };
 
-                await _unitOfWork.Orders.AddAsync(order, cancellationToken);
-                await _unitOfWork.SaveChangesAsync(cancellationToken);
+                decimal totalAmount = 0m;
 
-                decimal totalAmount = 0;
-
-                // Sipariş kalemlerini oluştur
-                foreach (var item in request.Items)
+                foreach (var cartItem in cart.CartItems)
                 {
-                    // Ürün kontrolü ve stok kontrolü
-                    var product = await _unitOfWork.Products
-                        .GetByIdAsync(item.ProductId, cancellationToken);
+                    var product = cartItem.Product;
+
+                    // Eğer navigation boşsa, garanti olsun diye DB'den çekelim
+                    if (product == null)
+                    {
+                        product = await _unitOfWork.Products
+                            .GetByIdAsync(cartItem.ProductId, cancellationToken);
+                    }
 
                     if (product == null)
                     {
                         await _unitOfWork.RollbackTransactionAsync(cancellationToken);
-                        return Result<OrderDto>.Failure($"Ürün bulunamadı: {item.ProductId}");
+                        return Result<OrderDto>.Failure($"Ürün bulunamadı: {cartItem.ProductId}");
                     }
 
-                    if (product.StockQuantity < item.Quantity)
+                    if (product.StockQuantity < cartItem.Quantity)
                     {
                         await _unitOfWork.RollbackTransactionAsync(cancellationToken);
                         return Result<OrderDto>.Failure(
                             $"Yetersiz stok: {product.Name} (Stok: {product.StockQuantity})");
                     }
 
-                    // Sipariş kalemi oluştur
                     var orderItem = new OrderItem
                     {
-                        OrderId = order.Id,
                         ProductId = product.Id,
-                        Quantity = item.Quantity,
+                        Quantity = cartItem.Quantity,
                         UnitPrice = product.Price,
-                        TotalPrice = product.Price * item.Quantity
+                        TotalPrice = product.Price * cartItem.Quantity
                     };
 
                     order.OrderItems.Add(orderItem);
+                    totalAmount += orderItem.TotalPrice;
 
-                    // Stok güncelle
-                    product.StockQuantity -= item.Quantity;
+                    // stok düş
+                    product.StockQuantity -= cartItem.Quantity;
                     await _unitOfWork.Products.UpdateAsync(product, cancellationToken);
                 }
 
-                // Toplam tutarı güncelle
                 order.TotalAmount = totalAmount;
-                await _unitOfWork.Orders.UpdateAsync(order, cancellationToken);
 
-                await _unitOfWork.SaveChangesAsync(cancellationToken);
-                await _unitOfWork.CommitTransactionAsync(cancellationToken);
+                await _unitOfWork.Orders.AddAsync(order, cancellationToken);
+
+                // Sepeti temizle (istersen tamamen sil)
+                cart.CartItems.Clear();
+                await _unitOfWork.Carts.UpdateAsync(cart, cancellationToken);
+
+                await _unitOfWork.SaveChangesAsync(cancellationToken);                
 
                 _logger.LogInformation(
-                    "Sipariş oluşturuldu: {OrderNumber}, Kullanıcı: {UserId}, Tutar: {Amount}",
-                    orderNumber,
+                    "Sepetten sipariş oluşturuldu: {OrderNumber}, Kullanıcı: {UserId}, Tutar: {Amount}",
+                    order.OrderNumber,
                     request.UserId,
                     totalAmount);
 
-                // Siparişi tekrar getir (ilişkilerle birlikte)
-                var createdOrder = await _unitOfWork.Orders
-                    .GetByOrderNumberAsync(orderNumber, cancellationToken);
+                // 🔥 ORDER ENTITY -> OrderDto (DTO'yu elle oluşturuyoruz)
+                var orderDto = new OrderDto(
+                    Id: order.Id,
+                    OrderNumber: order.OrderNumber,
+                    OrderDate: order.OrderDate,
+                    Status: order.Status.ToString(),
+                    TotalAmount: order.TotalAmount,
+                    ShippingAddress: order.ShippingAddress,
+                    TrackingNumber: order.TrackingNumber,
+                    Items: order.OrderItems.Select(oi =>
+                        new OrderItemDto(
+                            ProductId: oi.ProductId,
+                            ProductName: oi.Product?.Name ?? string.Empty,
+                            Quantity: oi.Quantity,
+                            UnitPrice: oi.UnitPrice,
+                            TotalPrice: oi.TotalPrice
+                        )
+                    ).ToList()
+                );
 
-                var orderDto = _mapper.Map<OrderDto>(createdOrder);
                 return Result<OrderDto>.Success(orderDto);
             }
             catch (Exception ex)
             {
                 await _unitOfWork.RollbackTransactionAsync(cancellationToken);
-                _logger.LogError(ex, "Sipariş oluşturulurken hata oluştu");
-                return Result<OrderDto>.Failure("Sipariş oluşturulurken bir hata oluştu.");
+                _logger.LogError(ex, "Sepetten sipariş oluşturulurken hata oluştu");
+                return Result<OrderDto>.Failure("Sepetten sipariş oluşturulurken bir hata oluştu.");
             }
         }
 

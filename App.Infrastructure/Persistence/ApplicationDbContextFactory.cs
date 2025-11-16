@@ -18,7 +18,7 @@ namespace App.Infrastructure.Persistence
             // 🔥 Geliştirme ortamında kullanacağın connection string
             // SQL Server için örnek:
             optionsBuilder.UseSqlServer(
-                "Server=(localdb)\\MSSQLLocalDB;Database=AppDb;Trusted_Connection=True;TrustServerCertificate=True");
+               "Server=DESKTOP-187A7MN\\MSSQLEKREM;Database=AppDb;Trusted_Connection=True;TrustServerCertificate=True");
 
             return new ApplicationDbContext(optionsBuilder.Options);
         }

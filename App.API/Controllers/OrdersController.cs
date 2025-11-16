@@ -51,12 +51,7 @@ namespace App.API.Controllers
         {
             var userId = int.Parse(User.FindFirst("userId")?.Value ?? "0");
 
-            var command = new CreateOrderCommand(
-                userId,
-                dto.ShippingAddress,
-                dto.Items
-            );
-
+            var command = new CreateOrderCommand(dto.UserId, dto.ShippingAddress);
             var result = await _mediator.Send(command);
 
             if (!result.IsSuccess)

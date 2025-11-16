@@ -63,12 +63,13 @@ namespace App.Application.Features.Cart.Commands.AddToCart
                 {
                     _logger.LogInformation("Kullanıcının sepeti yok, boş sepet dönüldü. UserId: {UserId}", request.UserId);
 
-                    var emptyCart = new CartDto(
-                        Id: 0,
-                        UserId: request.UserId,
-                        Items: new List<CartItemDto>(),
-                        TotalAmount: 0m
-                    );
+                    var emptyCart = new CartDto
+                    {
+                        Id = 0,
+                        UserId = request.UserId,
+                        Items = new List<CartItemDto>(),
+                        TotalAmount = 0m
+                    };
 
                     return Result<CartDto>.Success(emptyCart);
                 }

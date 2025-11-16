@@ -1,5 +1,6 @@
 ﻿using App.Application.Common;
 using App.Application.DTOs;
+using App.Application.Features.Products.Queries;
 using App.Domain.Interfaces;
 using AutoMapper;
 using MediatR;
@@ -10,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace App.Application.Features.Products.Queries
+namespace App.Application.Features.Products.Handlers
 {
     public class GetPaginatedProductsQueryHandler
      : IRequestHandler<GetPaginatedProductsQuery, Result<PaginatedResult<ProductDto>>>

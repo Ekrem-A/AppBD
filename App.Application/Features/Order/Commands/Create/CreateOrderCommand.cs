@@ -9,9 +9,17 @@ using System.Threading.Tasks;
 
 namespace App.Application.Features.Order.Commands.Create
 {
-    public record CreateOrderCommand(
-    int UserId,
-    string ShippingAddress,
-    List<CreateOrderItemDto> Items
-) : IRequest<Result<OrderDto>>;
+    public class CreateOrderCommand : IRequest<Result<OrderDto>>
+    {
+        public int UserId { get; }
+        public string ShippingAddress { get; }
+
+        public CreateOrderCommand(int userId, string shippingAddress)
+        {
+            UserId = userId;
+            ShippingAddress = shippingAddress;
+        }
+    }
 }
+
+

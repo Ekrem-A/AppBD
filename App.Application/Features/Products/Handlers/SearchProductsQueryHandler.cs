@@ -1,5 +1,6 @@
 ﻿using App.Application.Common;
 using App.Application.DTOs;
+using App.Application.Features.Products.Queries;
 using App.Domain.Interfaces;
 using AutoMapper;
 using MediatR;
@@ -10,18 +11,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace App.Application.Features.Products.Queries
+namespace App.Application.Features.Products.Handlers
 {
-    public class GetProductsByCategoryQueryHandler : IRequestHandler<GetProductsByCategoryQuery, Result<List<ProductDto>>>
+    public class SearchProductsQueryHandler : IRequestHandler<SearchProductsQuery, Result<List<ProductDto>>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        private readonly ILogger<GetProductsByCategoryQueryHandler> _logger;
+        private readonly ILogger<SearchProductsQueryHandler> _logger;
 
-        public GetProductsByCategoryQueryHandler(
+        public SearchProductsQueryHandler(
             IUnitOfWork unitOfWork,
             IMapper mapper,
-            ILogger<GetProductsByCategoryQueryHandler> logger)
+            ILogger<SearchProductsQueryHandler> logger)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -29,37 +30,34 @@ namespace App.Application.Features.Products.Queries
         }
 
         public async Task<Result<List<ProductDto>>> Handle(
-            GetProductsByCategoryQuery request,
+            SearchProductsQuery request,
             CancellationToken cancellationToken)
         {
             try
             {
-                // Kategori var mı kontrol et
-                var categoryExists = await _unitOfWork.Categories
-                    .ExistsAsync(request.CategoryId, cancellationToken);
-
-                if (!categoryExists)
+                if (string.IsNullOrWhiteSpace(request.SearchTerm))
                 {
-                    return Result<List<ProductDto>>.Failure("Kategori bulunamadı.");
+                    return Result<List<ProductDto>>.Failure("Arama terimi boş olamaz.");
                 }
 
                 var products = await _unitOfWork.Products
-                    .GetByCategoryIdAsync(request.CategoryId, cancellationToken);
+                    .SearchAsync(request.SearchTerm, cancellationToken);
 
                 var productDtos = _mapper.Map<List<ProductDto>>(products);
 
                 _logger.LogInformation(
-                    "Kategori {CategoryId} için {Count} ürün getirildi",
-                    request.CategoryId,
+                    "Arama terimi '{SearchTerm}' için {Count} ürün bulundu",
+                    request.SearchTerm,
                     productDtos.Count);
 
                 return Result<List<ProductDto>>.Success(productDtos);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Kategori ürünleri getirilirken hata oluştu");
-                return Result<List<ProductDto>>.Failure("Kategori ürünleri getirilirken bir hata oluştu.");
+                _logger.LogError(ex, "Ürün arama sırasında hata oluştu");
+                return Result<List<ProductDto>>.Failure("Ürün arama sırasında bir hata oluştu.");
             }
         }
     }
+
 }
