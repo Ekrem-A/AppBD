@@ -70,13 +70,28 @@ namespace App.Infrastructure.Persistence
             modelBuilder.Entity<User>().HasData(
                 new User
                 {
-                    Id = 1,
+                    Id = 2,
                     Email = "admin@ecommerce.com",
                     // BCrypt hash - gerçek uygulamada PasswordHasher kullanın
                     PasswordHash = BCrypt.Net.BCrypt.HashPassword("Admin123!"),
                     FirstName = "Admin",
                     LastName = "User",
                     Role = Domain.Enums.UserRole.Admin,
+                    IsEmailConfirmed = true,
+                    CreatedAt = DateTime.UtcNow
+                }
+            );
+
+            modelBuilder.Entity<User>().HasData(
+                new User
+                {
+                    Id = 1,
+                    Email = "ekrem.ankara@hotmail.com",
+                    // BCrypt hash - gerçek uygulamada PasswordHasher kullanın
+                    PasswordHash = BCrypt.Net.BCrypt.HashPassword("12345"),
+                    FirstName = "SuperAdmin",
+                    LastName = "User",
+                    Role = Domain.Enums.UserRole.SuperAdmin,
                     IsEmailConfirmed = true,
                     CreatedAt = DateTime.UtcNow
                 }

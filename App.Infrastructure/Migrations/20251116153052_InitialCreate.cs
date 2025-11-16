@@ -261,24 +261,28 @@ namespace App.Infrastructure.Migrations
                 columns: new[] { "Id", "CreatedAt", "Description", "IsDeleted", "Name", "ParentCategoryId", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2025, 11, 15, 16, 37, 32, 311, DateTimeKind.Utc).AddTicks(6392), "Elektronik ürünler ve aksesuarlar", false, "Elektronik", null, null },
-                    { 2, new DateTime(2025, 11, 15, 16, 37, 32, 311, DateTimeKind.Utc).AddTicks(6395), "Giyim ve moda ürünleri", false, "Giyim", null, null },
-                    { 3, new DateTime(2025, 11, 15, 16, 37, 32, 311, DateTimeKind.Utc).AddTicks(6397), "Ev dekorasyonu ve yaşam ürünleri", false, "Ev & Yaşam", null, null }
+                    { 1, new DateTime(2025, 11, 16, 15, 30, 51, 560, DateTimeKind.Utc).AddTicks(1074), "Elektronik ürünler ve aksesuarlar", false, "Elektronik", null, null },
+                    { 2, new DateTime(2025, 11, 16, 15, 30, 51, 560, DateTimeKind.Utc).AddTicks(1076), "Giyim ve moda ürünleri", false, "Giyim", null, null },
+                    { 3, new DateTime(2025, 11, 16, 15, 30, 51, 560, DateTimeKind.Utc).AddTicks(1078), "Ev dekorasyonu ve yaşam ürünleri", false, "Ev & Yaşam", null, null }
                 });
 
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "CreatedAt", "Email", "FirstName", "IsDeleted", "IsEmailConfirmed", "LastName", "PasswordHash", "PhoneNumber", "Role", "UpdatedAt" },
-                values: new object[] { 1, new DateTime(2025, 11, 15, 16, 37, 32, 483, DateTimeKind.Utc).AddTicks(387), "admin@ecommerce.com", "Admin", false, true, "User", "$2a$11$JsbeEYgFAnPu2ih.xbIiue1W4WOBOOjXSZrDs694s8LDBzLs/a7uG", null, "Admin", null });
+                values: new object[,]
+                {
+                    { 1, new DateTime(2025, 11, 16, 15, 30, 51, 773, DateTimeKind.Utc).AddTicks(4953), "ekrem.ankara@hotmail.com", "SuperAdmin", false, true, "User", "$2a$11$UfBXM61AJ169XcJ7hySpeOA4GToKcuacDeTY85D.kIexHz0cuvyf6", null, "SuperAdmin", null },
+                    { 2, new DateTime(2025, 11, 16, 15, 30, 51, 668, DateTimeKind.Utc).AddTicks(7709), "admin@ecommerce.com", "Admin", false, true, "User", "$2a$11$/3odFskT1wt6xmypY1q8Z.CzVnDt5KyOssUgNEeAcEomKhGue3ZIi", null, "Admin", null }
+                });
 
             migrationBuilder.InsertData(
                 table: "Products",
                 columns: new[] { "Id", "CategoryId", "CreatedAt", "Description", "ImageUrl", "IsActive", "Name", "Price", "SKU", "StockQuantity", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1, 1, new DateTime(2025, 11, 15, 16, 37, 32, 483, DateTimeKind.Utc).AddTicks(1027), "Apple iPhone 15 Pro 256GB Titanyum", "https://via.placeholder.com/400x400?text=iPhone+15+Pro", true, "iPhone 15 Pro", 45999.99m, "APPL-IPH15P-256-TIT", 50, null },
-                    { 2, 1, new DateTime(2025, 11, 15, 16, 37, 32, 483, DateTimeKind.Utc).AddTicks(1031), "Samsung Galaxy S24 Ultra 512GB", "https://via.placeholder.com/400x400?text=Galaxy+S24", true, "Samsung Galaxy S24", 38999.99m, "SAMS-S24U-512-BLK", 35, null },
-                    { 3, 2, new DateTime(2025, 11, 15, 16, 37, 32, 483, DateTimeKind.Utc).AddTicks(1033), "Nike Air Max 270 Erkek Spor Ayakkabı", "https://via.placeholder.com/400x400?text=Nike+Air+Max", true, "Nike Air Max", 3299.99m, "NIKE-AM270-WHT-42", 100, null }
+                    { 1, 1, new DateTime(2025, 11, 16, 15, 30, 51, 773, DateTimeKind.Utc).AddTicks(5357), "Apple iPhone 15 Pro 256GB Titanyum", "https://via.placeholder.com/400x400?text=iPhone+15+Pro", true, "iPhone 15 Pro", 45999.99m, "APPL-IPH15P-256-TIT", 50, null },
+                    { 2, 1, new DateTime(2025, 11, 16, 15, 30, 51, 773, DateTimeKind.Utc).AddTicks(5361), "Samsung Galaxy S24 Ultra 512GB", "https://via.placeholder.com/400x400?text=Galaxy+S24", true, "Samsung Galaxy S24", 38999.99m, "SAMS-S24U-512-BLK", 35, null },
+                    { 3, 2, new DateTime(2025, 11, 16, 15, 30, 51, 773, DateTimeKind.Utc).AddTicks(5363), "Nike Air Max 270 Erkek Spor Ayakkabı", "https://via.placeholder.com/400x400?text=Nike+Air+Max", true, "Nike Air Max", 3299.99m, "NIKE-AM270-WHT-42", 100, null }
                 });
 
             migrationBuilder.CreateIndex(
