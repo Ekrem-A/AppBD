@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 namespace App.Application.DTOs
 {
     public record LoginDto(
-    string Email,
-    string Password
+    string Email,    
+    string Password    
+
+
     );
     public record RegisterUserDto(
         string Email,

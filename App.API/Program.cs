@@ -65,7 +65,13 @@ builder.Services.AddSwaggerGen(c =>
 // Database Configuration
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-       
+
+
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenLocalhost(5106); // HTTP portu
+});
+
 
 // CORS Configuration
 builder.Services.AddCors(options =>
@@ -149,6 +155,7 @@ builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 
 
+
 builder.Services.AddControllers();
 
 var app = builder.Build();
@@ -166,7 +173,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseCors("AllowNextJS");
 
