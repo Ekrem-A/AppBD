@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  api:
+    build:
+      context: .
+      dockerfile: App.API/Dockerfile
+    ports:
+      - "5106:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - RunMigrations=true
+      - ConnectionStrings__DefaultConnection=Server=tcp:ekomyserver.database.windows.net,1433;Initial Catalog=E-commerce;Persist Security Info=False;User ID=Ekrem;Password=Ekoo.3003;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30

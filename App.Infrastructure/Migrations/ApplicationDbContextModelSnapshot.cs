@@ -180,7 +180,7 @@ namespace App.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2025, 11, 16, 15, 30, 51, 560, DateTimeKind.Utc).AddTicks(1074),
+                            CreatedAt = new DateTime(2025, 12, 17, 17, 10, 27, 56, DateTimeKind.Utc).AddTicks(772),
                             Description = "Elektronik ürünler ve aksesuarlar",
                             IsDeleted = false,
                             Name = "Elektronik"
@@ -188,7 +188,7 @@ namespace App.Infrastructure.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2025, 11, 16, 15, 30, 51, 560, DateTimeKind.Utc).AddTicks(1076),
+                            CreatedAt = new DateTime(2025, 12, 17, 17, 10, 27, 56, DateTimeKind.Utc).AddTicks(774),
                             Description = "Giyim ve moda ürünleri",
                             IsDeleted = false,
                             Name = "Giyim"
@@ -196,7 +196,7 @@ namespace App.Infrastructure.Migrations
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2025, 11, 16, 15, 30, 51, 560, DateTimeKind.Utc).AddTicks(1078),
+                            CreatedAt = new DateTime(2025, 12, 17, 17, 10, 27, 56, DateTimeKind.Utc).AddTicks(776),
                             Description = "Ev dekorasyonu ve yaşam ürünleri",
                             IsDeleted = false,
                             Name = "Ev & Yaşam"
@@ -418,7 +418,7 @@ namespace App.Infrastructure.Migrations
                         {
                             Id = 1,
                             CategoryId = 1,
-                            CreatedAt = new DateTime(2025, 11, 16, 15, 30, 51, 773, DateTimeKind.Utc).AddTicks(5357),
+                            CreatedAt = new DateTime(2025, 12, 17, 17, 10, 27, 259, DateTimeKind.Utc).AddTicks(5569),
                             Description = "Apple iPhone 15 Pro 256GB Titanyum",
                             ImageUrl = "https://via.placeholder.com/400x400?text=iPhone+15+Pro",
                             IsActive = true,
@@ -432,7 +432,7 @@ namespace App.Infrastructure.Migrations
                         {
                             Id = 2,
                             CategoryId = 1,
-                            CreatedAt = new DateTime(2025, 11, 16, 15, 30, 51, 773, DateTimeKind.Utc).AddTicks(5361),
+                            CreatedAt = new DateTime(2025, 12, 17, 17, 10, 27, 259, DateTimeKind.Utc).AddTicks(5572),
                             Description = "Samsung Galaxy S24 Ultra 512GB",
                             ImageUrl = "https://via.placeholder.com/400x400?text=Galaxy+S24",
                             IsActive = true,
@@ -446,7 +446,7 @@ namespace App.Infrastructure.Migrations
                         {
                             Id = 3,
                             CategoryId = 2,
-                            CreatedAt = new DateTime(2025, 11, 16, 15, 30, 51, 773, DateTimeKind.Utc).AddTicks(5363),
+                            CreatedAt = new DateTime(2025, 12, 17, 17, 10, 27, 259, DateTimeKind.Utc).AddTicks(5574),
                             Description = "Nike Air Max 270 Erkek Spor Ayakkabı",
                             ImageUrl = "https://via.placeholder.com/400x400?text=Nike+Air+Max",
                             IsActive = true,
@@ -521,25 +521,25 @@ namespace App.Infrastructure.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2025, 11, 16, 15, 30, 51, 668, DateTimeKind.Utc).AddTicks(7709),
+                            CreatedAt = new DateTime(2025, 12, 17, 17, 10, 27, 157, DateTimeKind.Utc).AddTicks(1903),
                             Email = "admin@ecommerce.com",
                             FirstName = "Admin",
                             IsDeleted = false,
                             IsEmailConfirmed = true,
                             LastName = "User",
-                            PasswordHash = "$2a$11$/3odFskT1wt6xmypY1q8Z.CzVnDt5KyOssUgNEeAcEomKhGue3ZIi",
+                            PasswordHash = "$2a$11$vTx/6GB7G5RMZxCZ8OpDgu.8podkMsPWmeOGlSEyFeJCvMnKnzPPW",
                             Role = "Admin"
                         },
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2025, 11, 16, 15, 30, 51, 773, DateTimeKind.Utc).AddTicks(4953),
+                            CreatedAt = new DateTime(2025, 12, 17, 17, 10, 27, 259, DateTimeKind.Utc).AddTicks(5204),
                             Email = "ekrem.ankara@hotmail.com",
                             FirstName = "SuperAdmin",
                             IsDeleted = false,
                             IsEmailConfirmed = true,
                             LastName = "User",
-                            PasswordHash = "$2a$11$UfBXM61AJ169XcJ7hySpeOA4GToKcuacDeTY85D.kIexHz0cuvyf6",
+                            PasswordHash = "$2a$11$DTfoFTXfgFu3mB/KU4IXDeiKHG4WRf4x8nGQXYAFm6JleBCWNjW8C",
                             Role = "SuperAdmin"
                         });
                 });

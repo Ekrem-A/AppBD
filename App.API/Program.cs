@@ -67,10 +67,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 
-builder.WebHost.ConfigureKestrel(options =>
-{
-    options.ListenLocalhost(5106); // HTTP portu
-});
+//builder.WebHost.ConfigureKestrel(options =>
+//{
+//    options.ListenLocalhost(5106); // HTTP portu
+//});
 
 
 // CORS Configuration
