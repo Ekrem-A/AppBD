@@ -1,12 +1,12 @@
 # ECommerce API
 
 Kısa açıklama
-- .NET 8 ile geliştirilmiş, Entity Framework Core kullanan e‑ticaret API projesi.
+- .NET 8 ile geliştirilmiş, Entity Framework Core ile katmanlı mimari(CQRS) e‑ticaret API projesi.
 - Katmanlar: `App.API` (web), `App.Infrastructure` (persistence), `App.Application`, `App.Domain`.
 
 Önkoşullar
 - .NET 8 SDK
-- Docker Desktop (lokal container testi için, production için yönetilen DB önerilir)
+- Docker Desktop (lokal container testi için, production için yönetilen DB (AZURE) önerilir)
 - (Opsiyonel) `dotnet-ef` tool: migrations için
 
 Hızlı başlat — yerel
